@@ -9,10 +9,6 @@ const app = express();
 app.use(cors());
 app.use(express.static("public"));
 
-app.get("/", (req, res) => {
-  res.send("Weather Intelligence Platform Running");
-});
-
 app.get("/weather/:city", async (req, res) => {
   try {
     const city = req.params.city;
@@ -23,8 +19,6 @@ app.get("/weather/:city", async (req, res) => {
 
     res.json(response.data);
   } catch (error) {
-    console.log(error.response?.data || error.message);
-
     res.status(500).json({
       error: "City not found",
     });
