@@ -42,3 +42,18 @@ button{
     margin-top:20px;
     border-radius:10px;
 }
+#forecast{
+    margin-top:20px;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.forecast-card{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    width:140px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}

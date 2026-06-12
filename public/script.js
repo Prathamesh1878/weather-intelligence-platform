@@ -20,6 +20,7 @@ async function getWeather(){
         await response.json();
 
         displayWeather(data);
+        getForecast(city);
 
         initMap(
             data.coord.lat,
@@ -55,6 +56,7 @@ function getCurrentLocationWeather(){
             await response.json();
 
             displayWeather(data);
+            getForecast(data.name);
 
             initMap(
                 data.coord.lat,
@@ -119,4 +121,54 @@ function displayWeather(data){
         <p><b>Weather:</b> ${data.weather[0].description}</p>
 
     `;
+}
+async function getForecast(city){
+
+    const response =
+    await fetch(`/forecast/${city}`);
+
+    const data =
+    await response.json();
+
+    let html = "";
+
+    const forecastList =
+    data.list.filter((item,index)=>
+        index % 8 === 0
+    );
+
+    forecastList.forEach(day=>{
+
+        html += `
+
+        <div class="forecast-card">
+
+            <h4>
+            ${
+                new Date(day.dt_txt)
+                .toLocaleDateString()
+            }
+            </h4>
+
+            <img
+            src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png">
+
+            <p>
+            ${day.main.temp} °C
+            </p>
+
+            <p>
+            ${day.weather[0].description}
+            </p>
+
+        </div>
+
+        `;
+
+    });
+
+    document.getElementById(
+        "forecast"
+    ).innerHTML = html;
+
 }

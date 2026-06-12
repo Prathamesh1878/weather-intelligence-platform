@@ -48,3 +48,24 @@ app.get("/weather/location/:lat/:lon", async (req, res) => {
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
+app.get("/forecast/:city", async (req, res) => {
+
+    try {
+
+        const city = req.params.city;
+
+        const response = await axios.get(
+            `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+        );
+
+        res.json(response.data);
+
+    } catch (error) {
+
+        res.status(500).json({
+            error: "Forecast not found"
+        });
+
+    }
+
+});
