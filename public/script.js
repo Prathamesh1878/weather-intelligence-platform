@@ -19,22 +19,7 @@ async function getWeather(){
         const data =
         await response.json();
 
-        document.getElementById("weather").innerHTML = `
-
-            <h2>${data.name}</h2>
-
-            <img
-            src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png">
-
-            <p><b>Temperature:</b> ${data.main.temp} °C</p>
-
-            <p><b>Humidity:</b> ${data.main.humidity}%</p>
-
-            <p><b>Wind Speed:</b> ${data.wind.speed} m/s</p>
-
-            <p><b>Weather:</b> ${data.weather[0].description}</p>
-
-        `;
+        displayWeather(data);
 
         initMap(
             data.coord.lat,
@@ -50,7 +35,44 @@ async function getWeather(){
     }
 
 }
+function getCurrentLocationWeather(){
 
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+
+            const lat =
+            position.coords.latitude;
+
+            const lon =
+            position.coords.longitude;
+
+            const response =
+            await fetch(
+                `/weather/location/${lat}/${lon}`
+            );
+
+            const data =
+            await response.json();
+
+            displayWeather(data);
+
+            initMap(
+                data.coord.lat,
+                data.coord.lon,
+                data.name
+            );
+
+        },
+        () => {
+
+            alert(
+                "Location access denied"
+            );
+
+        }
+    );
+
+}
 function initMap(lat,lng,city){
 
     if(map){
@@ -76,4 +98,25 @@ function initMap(lat,lng,city){
 
     marker.bindPopup(city)
           .openPopup();
+}
+function displayWeather(data){
+
+    document.getElementById(
+        "weather"
+    ).innerHTML = `
+
+        <h2>${data.name}</h2>
+
+        <img
+        src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png">
+
+        <p><b>Temperature:</b> ${data.main.temp} °C</p>
+
+        <p><b>Humidity:</b> ${data.main.humidity}%</p>
+
+        <p><b>Wind Speed:</b> ${data.wind.speed} m/s</p>
+
+        <p><b>Weather:</b> ${data.weather[0].description}</p>
+
+    `;
 }
