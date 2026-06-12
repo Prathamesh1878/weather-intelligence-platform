@@ -1,3 +1,6 @@
+let map;
+let marker;
+
 async function getWeather(){
 
     const city =
@@ -33,6 +36,12 @@ async function getWeather(){
 
         `;
 
+        initMap(
+            data.coord.lat,
+            data.coord.lon,
+            data.name
+        );
+
     }
     catch(error){
 
@@ -40,4 +49,31 @@ async function getWeather(){
 
     }
 
+}
+
+function initMap(lat,lng,city){
+
+    if(map){
+        map.remove();
+    }
+
+    map = L.map("map").setView(
+        [lat,lng],
+        10
+    );
+
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            attribution:
+            "&copy; OpenStreetMap Contributors"
+        }
+    ).addTo(map);
+
+    marker = L.marker(
+        [lat,lng]
+    ).addTo(map);
+
+    marker.bindPopup(city)
+          .openPopup();
 }
