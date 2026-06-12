@@ -1,5 +1,6 @@
 let map;
 let marker;
+let tempChart;
 
 async function getWeather(){
 
@@ -20,6 +21,7 @@ async function getWeather(){
         await response.json();
 
         displayWeather(data);
+
         getForecast(city);
 
         initMap(
@@ -36,6 +38,7 @@ async function getWeather(){
     }
 
 }
+
 function getCurrentLocationWeather(){
 
     navigator.geolocation.getCurrentPosition(
@@ -56,6 +59,7 @@ function getCurrentLocationWeather(){
             await response.json();
 
             displayWeather(data);
+
             getForecast(data.name);
 
             initMap(
@@ -75,32 +79,7 @@ function getCurrentLocationWeather(){
     );
 
 }
-function initMap(lat,lng,city){
 
-    if(map){
-        map.remove();
-    }
-
-    map = L.map("map").setView(
-        [lat,lng],
-        10
-    );
-
-    L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-            attribution:
-            "&copy; OpenStreetMap Contributors"
-        }
-    ).addTo(map);
-
-    marker = L.marker(
-        [lat,lng]
-    ).addTo(map);
-
-    marker.bindPopup(city)
-          .openPopup();
-}
 function displayWeather(data){
 
     document.getElementById(
@@ -122,6 +101,7 @@ function displayWeather(data){
 
     `;
 }
+
 async function getForecast(city){
 
     const response =
@@ -130,16 +110,20 @@ async function getForecast(city){
     const data =
     await response.json();
 
-    let html = "";
+    let forecastHTML = "";
 
-    const forecastList =
-    data.list.filter((item,index)=>
-        index % 8 === 0
+    const dailyForecasts =
+    data.list.filter(
+        (item,index) => index % 8 === 0
     );
 
-    forecastList.forEach(day=>{
+    createTemperatureChart(
+        dailyForecasts
+    );
 
-        html += `
+    dailyForecasts.forEach(day => {
+
+        forecastHTML += `
 
         <div class="forecast-card">
 
@@ -169,6 +153,75 @@ async function getForecast(city){
 
     document.getElementById(
         "forecast"
-    ).innerHTML = html;
+    ).innerHTML = forecastHTML;
+
+}
+
+function createTemperatureChart(data){
+
+    const labels =
+    data.map(item =>
+        new Date(item.dt_txt)
+        .toLocaleDateString()
+    );
+
+    const temperatures =
+    data.map(item =>
+        item.main.temp
+    );
+
+    if(tempChart){
+        tempChart.destroy();
+    }
+
+    const ctx =
+    document.getElementById(
+        "tempChart"
+    );
+
+    tempChart = new Chart(ctx, {
+
+        type: "line",
+
+        data: {
+
+            labels: labels,
+
+            datasets: [{
+                label: "Temperature °C",
+                data: temperatures
+            }]
+
+        }
+
+    });
+
+}
+
+function initMap(lat,lng,city){
+
+    if(map){
+        map.remove();
+    }
+
+    map = L.map("map").setView(
+        [lat,lng],
+        10
+    );
+
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            attribution:
+            "&copy; OpenStreetMap Contributors"
+        }
+    ).addTo(map);
+
+    marker = L.marker(
+        [lat,lng]
+    ).addTo(map);
+
+    marker.bindPopup(city)
+          .openPopup();
 
 }
