@@ -462,7 +462,7 @@ if("serviceWorker" in navigator){
     );
 
 }
-function signup(){
+async function signup(){
 
     const username =
     document.getElementById(
@@ -481,24 +481,52 @@ function signup(){
         );
 
         return;
+
     }
 
-    const user = {
-        username,
-        password
-    };
+    try{
 
-    localStorage.setItem(
-        "user",
-        JSON.stringify(user)
-    );
+        const response =
+        await fetch(
+            "/register",
+            {
 
-    alert(
-        "Signup Successful"
-    );
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body:JSON.stringify({
+
+                    username,
+                    password
+
+                })
+
+            }
+        );
+
+        const data =
+        await response.json();
+
+        alert(
+            data.message ||
+            data.error
+        );
+
+    }
+    catch(error){
+
+        alert(
+            "Registration Failed"
+        );
+
+    }
 
 }
-function login(){
+async function login(){
 
     const username =
     document.getElementById(
@@ -510,33 +538,52 @@ function login(){
         "password"
     ).value;
 
-    const user =
-    JSON.parse(
-        localStorage.getItem(
-            "user"
-        )
-    );
+    try{
 
-    if(
-        user &&
-        user.username === username &&
-        user.password === password
-    ){
+        const response =
+        await fetch(
+            "/login",
+            {
 
-        localStorage.setItem(
-            "loggedIn",
-            true
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body:JSON.stringify({
+
+                    username,
+                    password
+
+                })
+
+            }
         );
 
+        const data =
+        await response.json();
+
+        if(response.ok){
+
+            localStorage.setItem(
+                "loggedIn",
+                true
+            );
+
+        }
+
         alert(
-            "Login Successful"
+            data.message ||
+            data.error
         );
 
     }
-    else{
+    catch(error){
 
         alert(
-            "Invalid Credentials"
+            "Login Failed"
         );
 
     }
