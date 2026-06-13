@@ -69,3 +69,24 @@ app.get("/forecast/:city", async (req, res) => {
     }
 
 });
+app.get("/aqi/:lat/:lon", async (req, res) => {
+
+    try {
+
+        const { lat, lon } = req.params;
+
+        const response = await axios.get(
+            `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}`
+        );
+
+        res.json(response.data);
+
+    } catch (error) {
+
+        res.status(500).json({
+            error: "AQI data not found"
+        });
+
+    }
+
+});
