@@ -17,15 +17,39 @@
 <div class="container">
 
     <h1>🌤 Weather Intelligence Platform</h1>
+
     <button onclick="toggleTheme()">
-    🌙 Toggle Dark Mode
+        🌙 Toggle Dark Mode
     </button>
-    <h2>Favorite Cities</h2>
 
-    <div id="favorites"></div>
-    <h2>Recent Searches</h2>
+    <div id="auth-section">
 
-    <div id="history"></div>
+        <h2>Login / Signup</h2>
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Username">
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Password">
+
+        <button onclick="signup()">
+            Sign Up
+        </button>
+
+        <button onclick="login()">
+            Login
+        </button>
+
+        <button onclick="logout()">
+            Logout
+        </button>
+
+    </div>
+
     <div class="search-box">
 
         <input
@@ -36,27 +60,39 @@
         <button onclick="getWeather()">
             Search
         </button>
+
         <button onclick="getCurrentLocationWeather()">
             📍 My Location
         </button>
 
+        <button onclick="saveFavorite()">
+            ⭐ Save City
+        </button>
+
     </div>
-    <button onclick="saveFavorite()">
-    ⭐ Save City
-    </button>
 
     <div id="weather"></div>
+
     <div id="forecast"></div>
+
     <div id="aqi"></div>
+
+    <h2>Favorite Cities</h2>
+    <div id="favorites"></div>
+
+    <h2>Recent Searches</h2>
+    <div id="history"></div>
+
     <canvas id="tempChart"></canvas>
+
     <div id="map"></div>
 
 </div>
 
-<script
-src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script src="script.js"></script>
 
 </body>

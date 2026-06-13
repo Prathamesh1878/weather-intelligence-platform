@@ -110,3 +110,25 @@ canvas{
     padding:10px;
     cursor:pointer;
 }
+#auth-section{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:10px;
+}
+
+#auth-section input{
+    margin:5px;
+}
+#auth-section{
+    background:white;
+    padding:20px;
+    margin:20px 0;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.dark-mode #auth-section{
+    background:#1e1e1e;
+    color:white;
+}

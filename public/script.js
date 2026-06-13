@@ -299,9 +299,10 @@ window.onload = () => {
             "dark-mode"
         );
     }
-
+    checkLogin();
     loadFavorites();
     loadHistory();
+
 
 };
 function saveFavorite(){
@@ -459,5 +460,112 @@ if("serviceWorker" in navigator){
 
         }
     );
+
+}
+function signup(){
+
+    const username =
+    document.getElementById(
+        "username"
+    ).value;
+
+    const password =
+    document.getElementById(
+        "password"
+    ).value;
+
+    if(!username || !password){
+
+        alert(
+            "Fill all fields"
+        );
+
+        return;
+    }
+
+    const user = {
+        username,
+        password
+    };
+
+    localStorage.setItem(
+        "user",
+        JSON.stringify(user)
+    );
+
+    alert(
+        "Signup Successful"
+    );
+
+}
+function login(){
+
+    const username =
+    document.getElementById(
+        "username"
+    ).value;
+
+    const password =
+    document.getElementById(
+        "password"
+    ).value;
+
+    const user =
+    JSON.parse(
+        localStorage.getItem(
+            "user"
+        )
+    );
+
+    if(
+        user &&
+        user.username === username &&
+        user.password === password
+    ){
+
+        localStorage.setItem(
+            "loggedIn",
+            true
+        );
+
+        alert(
+            "Login Successful"
+        );
+
+    }
+    else{
+
+        alert(
+            "Invalid Credentials"
+        );
+
+    }
+
+}
+function logout(){
+
+    localStorage.removeItem(
+        "loggedIn"
+    );
+
+    alert(
+        "Logged Out"
+    );
+
+}
+function checkLogin(){
+
+    const loggedIn =
+    localStorage.getItem(
+        "loggedIn"
+    );
+
+    if(loggedIn){
+
+        console.log(
+            "User Logged In"
+        );
+
+    }
 
 }
