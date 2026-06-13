@@ -101,3 +101,12 @@ canvas{
     padding:10px;
     cursor:pointer;
 }
+#history{
+    margin-top:20px;
+}
+
+.history-city{
+    margin:5px;
+    padding:10px;
+    cursor:pointer;
+}

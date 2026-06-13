@@ -21,6 +21,7 @@ async function getWeather(){
         await response.json();
 
         displayWeather(data);
+        saveSearchHistory(city);
         getAQI(
             data.coord.lat,
             data.coord.lon
@@ -300,6 +301,7 @@ window.onload = () => {
     }
 
     loadFavorites();
+    loadHistory();
 
 };
 function saveFavorite(){
@@ -376,5 +378,64 @@ function searchFavorite(city){
     ).value = city;
 
     getWeather();
+
+}
+function saveSearchHistory(city){
+
+    let history =
+    JSON.parse(
+        localStorage.getItem(
+            "history"
+        )
+    ) || [];
+
+    history =
+    history.filter(
+        item => item !== city
+    );
+
+    history.unshift(city);
+
+    history =
+    history.slice(0,5);
+
+    localStorage.setItem(
+        "history",
+        JSON.stringify(history)
+    );
+
+    loadHistory();
+
+}
+function loadHistory(){
+
+    const history =
+    JSON.parse(
+        localStorage.getItem(
+            "history"
+        )
+    ) || [];
+
+    let html = "";
+
+    history.forEach(city => {
+
+        html += `
+
+        <button
+        class="history-city"
+        onclick="searchFavorite('${city}')">
+
+        ${city}
+
+        </button>
+
+        `;
+
+    });
+
+    document.getElementById(
+        "history"
+    ).innerHTML = html;
 
 }
