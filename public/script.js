@@ -294,11 +294,87 @@ window.onload = () => {
     );
 
     if(theme === "dark"){
-
         document.body.classList.add(
             "dark-mode"
         );
-
     }
 
+    loadFavorites();
+
 };
+function saveFavorite(){
+
+    const city =
+    document.getElementById(
+        "city"
+    ).value;
+
+    if(!city){
+        alert("Enter city first");
+        return;
+    }
+
+    let favorites =
+    JSON.parse(
+        localStorage.getItem(
+            "favorites"
+        )
+    ) || [];
+
+    if(
+        !favorites.includes(city)
+    ){
+        favorites.push(city);
+
+        localStorage.setItem(
+            "favorites",
+            JSON.stringify(
+                favorites
+            )
+        );
+    }
+
+    loadFavorites();
+
+}
+function loadFavorites(){
+
+    const favorites =
+    JSON.parse(
+        localStorage.getItem(
+            "favorites"
+        )
+    ) || [];
+
+    let html = "";
+
+    favorites.forEach(city => {
+
+        html += `
+
+        <button
+        class="favorite-city"
+        onclick="searchFavorite('${city}')">
+
+        ${city}
+
+        </button>
+
+        `;
+
+    });
+
+    document.getElementById(
+        "favorites"
+    ).innerHTML = html;
+
+}
+function searchFavorite(city){
+
+    document.getElementById(
+        "city"
+    ).value = city;
+
+    getWeather();
+
+}

@@ -92,3 +92,12 @@ canvas{
     background:#333;
     color:white;
 }
+#favorites{
+    margin-top:20px;
+}
+
+.favorite-city{
+    margin:5px;
+    padding:10px;
+    cursor:pointer;
+}
